@@ -177,18 +177,33 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
                           CarDetails(detailsList: [
                             DetailsModel(
                                 tilte: 'الماركة', value: widget.ad.brand),
+                            DetailsModel(
+                                tilte: 'الحالة',
+                                value: widget.ad.listingstatus),
+                            DetailsModel(
+                                tilte: 'كيلومترات',
+                                value: widget.ad.kilometers),
                             DetailsModel(tilte: 'موديل', value: widget.ad.year),
                             DetailsModel(
-                                tilte: 'نسخة', value: widget.ad.version),
+                                tilte: 'سنة الصنع',
+                                value: widget.ad.manufacturingYear),
+                            DetailsModel(
+                                tilte: 'قوة الحصان ',
+                                value: widget.ad.horsePower),
+                            DetailsModel(
+                                tilte: 'سعة المحرك  ',
+                                value: widget.ad.engineCapacity),
+                            DetailsModel(
+                                tilte: 'لون السيارة', value: widget.ad.color),
+                            DetailsModel(
+                                tilte: 'قوة الدفع',
+                                value: widget.ad.drivetrain),
+                            DetailsModel(
+                                tilte: 'الوارد', value: widget.ad.imported),
                             DetailsModel(
                                 tilte: 'عدد المقاعد', value: widget.ad.seats),
                             DetailsModel(
-                                tilte: 'اللون', value: widget.ad.color),
-                            DetailsModel(
-                                tilte: 'الجزء الداخلي',
-                                value: widget.ad.innerpart),
-                            DetailsModel(
-                                tilte: 'عدد الابواب', value: widget.ad.doors),
+                                tilte: 'نوع السيارة', value: widget.ad.carType),
                             DetailsModel(
                                 tilte: 'الدفع', value: widget.ad.paymentMethod),
                             DetailsModel(
@@ -205,71 +220,119 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
                     : isForSale
                         ? CarDetails(detailsList: [
                             DetailsModel(
-                                tilte: 'مفروش',
-                                value: widget.ad.furnishing == true
-                                    ? 'نعم'
-                                    : 'لا '),
+                                tilte: 'نوع العقار',
+                                value: widget.ad.propertyType),
                             DetailsModel(
-                                tilte: 'الطابق', value: widget.ad.floor),
+                                tilte: 'حالة العقار',
+                                value: widget.ad.propertyCondition),
                             DetailsModel(
                               tilte: 'التنظيم',
                               value: widget.ad.regulationStatus,
                             ),
                             DetailsModel(
-                                tilte: 'عمر المبنى', value: widget.ad.year),
+                              tilte: 'المساحه',
+                              value: "${widget.ad.area}",
+                            ),
                             DetailsModel(
-                                tilte: 'حالةالمبنى',
+                                tilte: 'الطابق', value: widget.ad.floor),
+                            DetailsModel(
+                                tilte: 'عدد الطوابق',
+                                value: widget.ad.floorNumber),
+                            DetailsModel(
+                                tilte: 'عدد الغرف',
+                                value: "${widget.ad.numberOfRooms}"),
+                            DetailsModel(
+                                tilte: 'عدد الصالونات',
+                                value: "${widget.ad.numberOfSalons}"),
+                            DetailsModel(
+                                tilte: 'عدد الحمامات',
+                                value: "${widget.ad.numberOfBathrooms}"),
+                            DetailsModel(
+                                tilte: 'عمر\n المبنى', value: widget.ad.year),
+                            DetailsModel(
+                                tilte: 'مفروش',
+                                value: widget.ad.furnishing == true
+                                    ? 'نعم'
+                                    : 'لا '),
+                            DetailsModel(
+                                tilte: 'حالة\nالمبنى',
                                 value: widget.ad.propertyCondition),
                             DetailsModel(
                                 tilte: 'الدفع', value: widget.ad.paymentMethod),
                             DetailsModel(
-                                tilte: 'المحافظة', value: widget.ad.city),
+                                tilte: 'أدخل الطابو', value: widget.ad.deed),
                             DetailsModel(
-                                tilte: 'من قبل', value: widget.ad.publishedVia),
+                                tilte: 'المحافظة', value: widget.ad.city),
                           ])
                         : isForRent
                             ? CarDetails(detailsList: [
+                                DetailsModel(
+                                    tilte: 'نوع العقار',
+                                    value: widget.ad.propertyType),
+                                DetailsModel(
+                                    tilte: 'حالة العقار',
+                                    value: widget.ad.propertyCondition),
+                                DetailsModel(
+                                  tilte: 'التنظيم',
+                                  value: widget.ad.regulationStatus,
+                                ),
+                                DetailsModel(
+                                  tilte: 'المساحه',
+                                  value: "${widget.ad.area}",
+                                ),
+                                DetailsModel(
+                                    tilte: 'الطابق', value: widget.ad.floor),
+                                DetailsModel(
+                                    tilte: 'عدد الطوابق',
+                                    value: widget.ad.floorNumber),
+                                DetailsModel(
+                                    tilte: 'عدد الغرف',
+                                    value: "${widget.ad.numberOfRooms}"),
+                                DetailsModel(
+                                    tilte: 'عدد الصالونات',
+                                    value: "${widget.ad.numberOfSalons}"),
+                                DetailsModel(
+                                    tilte: 'عدد الحمامات',
+                                    value: "${widget.ad.numberOfBathrooms}"),
+                                DetailsModel(
+                                    tilte: 'عمر\n المبنى',
+                                    value: widget.ad.year),
                                 DetailsModel(
                                     tilte: 'مفروش',
                                     value: widget.ad.furnishing == true
                                         ? 'نعم'
                                         : 'لا '),
                                 DetailsModel(
-                                    tilte: 'الطابق', value: widget.ad.floor),
+                                    tilte: 'حالة\nالمبنى',
+                                    value: widget.ad.propertyCondition),
                                 DetailsModel(
-                                  tilte: 'التنظيم',
-                                  value: widget.ad.regulationStatus,
-                                ),
-                                DetailsModel(
-                                    tilte: 'عمر المبنى', value: widget.ad.year),
-                                DetailsModel(
-                                    tilte: 'معدل الإيجار',
-                                    value: widget.ad.rentalRate),
-                                DetailsModel(
-                                    tilte: 'التأمين',
-                                    value:
-                                        widget.ad.securityDeposit.toString()),
+                                    tilte: 'الدفع',
+                                    value: widget.ad.paymentMethod),
                                 DetailsModel(
                                     tilte: 'المحافظة', value: widget.ad.city),
-                                DetailsModel(
-                                    tilte: 'من قبل',
-                                    value: widget.ad.publishedVia),
                               ])
                             : isLand
                                 ? CarDetails(detailsList: [
+                                    DetailsModel(
+                                        tilte: 'النوع',
+                                        value: widget.ad.propertyType),
+                                    DetailsModel(
+                                        tilte: 'الحالة',
+                                        value: widget.ad.listingstatus),
+                                    DetailsModel(
+                                      tilte: 'التنظيم',
+                                      value: widget.ad.regulationStatus,
+                                    ),
+                                    DetailsModel(
+                                      tilte: 'المساحة',
+                                      value: "${widget.ad.area}",
+                                    ),
                                     DetailsModel(
                                         tilte: 'الدفع',
                                         value: widget.ad.paymentMethod),
                                     DetailsModel(
                                         tilte: 'المحافظة',
                                         value: widget.ad.city),
-                                    DetailsModel(
-                                      tilte: 'التنظيم',
-                                      value: widget.ad.regulationStatus,
-                                    ),
-                                    DetailsModel(
-                                        tilte: 'من قبل',
-                                        value: widget.ad.publishedVia),
                                   ])
                                 : Container(),
                 const Divider(

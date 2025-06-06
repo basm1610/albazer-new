@@ -8,6 +8,7 @@ import 'package:albazar_app/core/utils/icons.dart';
 import 'package:albazar_app/core/widgets/custom_drob_down.dart';
 import 'package:albazar_app/core/widgets/fields/custom_labeled_text_field.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_xlider/flutter_xlider.dart';
 
 class CarsForSaleFiltersForm extends StatefulWidget {
   final Map<String, dynamic>? filters;
@@ -41,6 +42,8 @@ class CarsForSaleFiltersFormState extends State<CarsForSaleFiltersForm> {
       _saleorRentController = TextEditingController();
 
   final List<String> _selectedAddOns = [];
+  double _lowerValue = 1920;
+  double _upperValue = 2026;
   bool isChecked = false;
   String? _selectedCity;
   final List<String> addOns = [
@@ -297,6 +300,57 @@ class CarsForSaleFiltersFormState extends State<CarsForSaleFiltersForm> {
           },
           label: 'لون السيارة',
           hint: "لون السيارة",
+        ),
+        const SizedBox(
+          height: 25,
+        ),
+        SizedBox(
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  _buildYearBox(_upperValue.toInt().toString()), // "إلى"
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: Text("إلى", style: TextStyle(color: Colors.grey)),
+                  ),
+                  _buildYearBox(_lowerValue.toInt().toString()), // "من"
+                ],
+              ),
+              SizedBox(height: 20),
+              FlutterSlider(
+                values: [_lowerValue, _upperValue],
+                rangeSlider: true,
+                max: 2026,
+                min: 1920,
+                step: FlutterSliderStep(step: 1),
+                handler: FlutterSliderHandler(
+                  decoration: BoxDecoration(),
+                  child: CircleAvatar(
+                    radius: 10,
+                    backgroundColor: Colors.yellow,
+                  ),
+                ),
+                rightHandler: FlutterSliderHandler(
+                  decoration: BoxDecoration(),
+                  child: CircleAvatar(
+                    radius: 10,
+                    backgroundColor: Colors.yellow,
+                  ),
+                ),
+                trackBar: FlutterSliderTrackBar(
+                  activeTrackBar: BoxDecoration(color: Colors.yellow),
+                ),
+                onDragging: (handlerIndex, lowerValue, upperValue) {
+                  setState(() {
+                    _lowerValue = lowerValue;
+                    _upperValue = upperValue;
+                  });
+                },
+              ),
+            ],
+          ),
         ),
         const SizedBox(
           height: 25,
@@ -595,4 +649,20 @@ class CarsForSaleFiltersFormState extends State<CarsForSaleFiltersForm> {
       ],
     );
   }
+}
+
+Widget _buildYearBox(String year) {
+  return Container(
+    width: 80,
+    height: 50,
+    alignment: Alignment.center,
+    decoration: BoxDecoration(
+      border: Border.all(color: Colors.black),
+      borderRadius: BorderRadius.circular(10),
+    ),
+    child: Text(
+      year,
+      style: TextStyle(fontSize: 16, color: Colors.grey),
+    ),
+  );
 }

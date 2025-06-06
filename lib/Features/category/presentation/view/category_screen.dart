@@ -25,6 +25,8 @@ import 'package:albazar_app/core/utils/icons.dart';
 import 'package:albazar_app/core/utils/styles.dart';
 import 'package:albazar_app/core/widgets/loading/custom_skeleton_widget.dart';
 import 'package:albazar_app/core/widgets/loading/lazy_loading_list_view.dart';
+import 'package:flutter_xlider/flutter_xlider.dart';
+
 
 class CategoryScreen extends StatefulWidget {
   final Category category;
@@ -48,6 +50,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
   String _query = "";
 
   final DebounceHelper _debounce = DebounceHelper();
+
 
   // final List<String> categoryItems = [
   //   "سكني",
@@ -223,8 +226,8 @@ class _CategoryScreenState extends State<CategoryScreen> {
                 ],
               ),
             ),
-            // const SizedBox(height: 20),
-            // Spacer(),
+            const SizedBox(height: 20),
+            Spacer(),
             SizedBox(
               height: MediaQuery.of(context).size.height - 361.h,
               child: BlocBuilder<CategoryAdsCubit, CategoryAdsState>(
@@ -313,6 +316,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                 },
               ),
             ),
+           
             // const Spacer(),
             const Align(
               alignment: Alignment.bottomCenter,
@@ -450,4 +454,7 @@ class CustomRefreshWidget extends StatelessWidget {
       child: child,
     );
   }
+
+   
 }
+

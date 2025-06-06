@@ -45,14 +45,14 @@ class _CarDetailsState extends State<CarDetails> {
                 : widget.detailsList.length == 4
                     ? 100
                     //     ? 200
-                    : index * 29.toDouble(),
+                    : index * 26.toDouble(),
             child: GridView.builder(
               physics: const NeverScrollableScrollPhysics(),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2, // number of columns
                 crossAxisSpacing: 5,
-                mainAxisSpacing: 5,
-                childAspectRatio: 4,
+                mainAxisSpacing: 2,
+                childAspectRatio: 3.5,
               ),
               itemCount: widget.detailsList.length,
               itemBuilder: (context, index) {
@@ -73,29 +73,32 @@ class DetailsCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: 170,
-      height: 50,
-      padding: const EdgeInsets.symmetric(horizontal: 8),
-      decoration: BoxDecoration(
-          color: Theme.of(context).highlightColor,
-          borderRadius: BorderRadius.circular(8)),
+      // height: 50,
+      // color: Colors.black,
+      // padding: const EdgeInsets.symmetric(horizontal: 8),
+      // decoration: BoxDecoration(
+      //     color: Theme.of(context).highlightColor,
+      //     borderRadius: BorderRadius.circular(8)),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Card(
-            child: SizedBox(
-              width: 60,
-              child: Text(
-                model.tilte ?? '',
-                style: TextStyle(
-                  color: Theme.of(context).hoverColor,
-                  fontSize: 13,
-                  fontFamily: 'Noor',
-                  fontWeight: FontWeight.w400,
-                ),
+          Container(
+            width: 68,
+            padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+            decoration: BoxDecoration(
+                color: Theme.of(context).highlightColor,
+                borderRadius: BorderRadius.circular(8)),
+            child: Text(
+              model.tilte ?? '',
+              style: TextStyle(
+                color: Theme.of(context).hoverColor,
+                fontSize: 13,
+                fontFamily: 'Noor',
+                fontWeight: FontWeight.w400,
               ),
             ),
           ),
-          SizedBox(
+          Container(
             width: 80,
             child: Text(
               model.value ?? "",

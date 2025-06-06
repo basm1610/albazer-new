@@ -37,7 +37,7 @@ class _PropertiesForSaleFormState extends State<PropertiesForSaleForm> {
     'floor': GlobalKey(), ///////
     'luxuries': GlobalKey(),
     'rooms': GlobalKey(),
-    'salons': GlobalKey(),/////////////
+    'salons': GlobalKey(), /////////////
     'bathrooms': GlobalKey(),
     'furniture': GlobalKey(),
     'inOrOut': GlobalKey(),
@@ -55,8 +55,8 @@ class _PropertiesForSaleFormState extends State<PropertiesForSaleForm> {
     'name': GlobalKey(),
     'phone': GlobalKey(),
     'contact': GlobalKey(),
-    'floorNum': GlobalKey(),//////////
-    'deed': GlobalKey(),//////////////
+    'floorNum': GlobalKey(), //////////
+    'deed': GlobalKey(), //////////////
   };
   final TextEditingController _areaController = TextEditingController(),
       _floorController = TextEditingController(),
@@ -98,11 +98,9 @@ class _PropertiesForSaleFormState extends State<PropertiesForSaleForm> {
       if (_selectedBuildingAge == null) _fieldKeys['age'],
       if (_nameController.text.isEmpty) _fieldKeys['name'],
       if (_phoneController.text.isEmpty) _fieldKeys['phone'],
-      if (_selectedFloor == null) _fieldKeys['floor'],//////
-      if (_selectedFloorNum == null) _fieldKeys['floorNum'],//////
-      if (_selectedDeed == null) _fieldKeys['deed'],////////
-
-
+      if (_selectedFloor == null) _fieldKeys['floor'], //////
+      if (_selectedFloorNum == null) _fieldKeys['floorNum'], //////
+      if (_selectedDeed == null) _fieldKeys['deed'], ////////
     ];
 
     if (invalidFields.isNotEmpty) {
@@ -669,12 +667,12 @@ class _PropertiesForSaleFormState extends State<PropertiesForSaleForm> {
             const SizedBox(height: 25),
             SubmitAdButton(
               onPressed: () {
-                // if (_formKey.currentState!.validate()) {
-                _submit(context);
-                // } else {
-                //   // _scrollToFirstInvalidField();
-                log("errrrrrrrrrrrrrrrrrrrrrrrrrrrrrrro");
-                // }
+                if (_formKey.currentState!.validate()) {
+                  _submit(context);
+                } else {
+                  _scrollToFirstInvalidField();
+                  // log("errrrrrrrrrrrrrrrrrrrrrrrrrrrrrrro");
+                }
               },
             ),
             const SizedBox(height: 25),
@@ -761,15 +759,15 @@ class _PropertiesForSaleFormState extends State<PropertiesForSaleForm> {
       return false;
     }
     if (_selectedFloor == null) {
-      AppMessages.showError(context, 'اختر الطابق');///////////
+      AppMessages.showError(context, 'اختر الطابق'); ///////////
       return false;
     }
     if (_selectedFloorNum == null) {
-      AppMessages.showError(context, 'اختر عدد الطوابق');///////////////
+      AppMessages.showError(context, 'اختر عدد الطوابق'); ///////////////
       return false;
     }
-        if (_selectedDeed == null) {
-      AppMessages.showError(context, 'اختر نوع الطابو ');///////////////
+    if (_selectedDeed == null) {
+      AppMessages.showError(context, 'اختر نوع الطابو '); ///////////////
       return false;
     }
     if (_selectedLuxuries.isEmpty) {
@@ -782,7 +780,7 @@ class _PropertiesForSaleFormState extends State<PropertiesForSaleForm> {
       return false;
     }
     if (_selectedSalons == 0) {
-      AppMessages.showError(context, 'ادخل عدد الصالونات');////////////////
+      AppMessages.showError(context, 'ادخل عدد الصالونات'); ////////////////
       return false;
     }
 
