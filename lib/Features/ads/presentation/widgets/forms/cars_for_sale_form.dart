@@ -58,6 +58,11 @@ class _CarsForSaleFormState extends State<CarsForSaleForm> {
     'name': GlobalKey(),
     'phone': GlobalKey(),
     'contact': GlobalKey(),
+    'years': GlobalKey(),
+    'horsePower': GlobalKey(), ///////////////
+    'engineCapacity': GlobalKey(), ///////////
+    'bumber': GlobalKey(), //////drivetrain///////
+    'imported': GlobalKey(), /////////////////////
   };
 
   final TextEditingController _adTitleController = TextEditingController(),
@@ -72,7 +77,9 @@ class _CarsForSaleFormState extends State<CarsForSaleForm> {
       _versionController = TextEditingController(),
       _doorsController = TextEditingController(),
       _innerPartController = TextEditingController(),
-      _sypController = TextEditingController();
+      _sypController = TextEditingController(),
+      _horsePowerController = TextEditingController(),
+      _engineCapacityController = TextEditingController();
   final List<File> _images = [];
   String _selectedFuelType = '',
       _selectedTransmission = '',
@@ -84,15 +91,140 @@ class _CarsForSaleFormState extends State<CarsForSaleForm> {
       _selectedCarType = '';
   String? _selectedCity;
   String? _selectedBrand;
+  String? _selectedBumper;
+  String? _selectedImported;
+  String? _selectedYears;
+  String? selectedCarTypeeee;
   int? _selectedseats = 0;
   bool _negotiable = false;
   double? lat;
   double? long;
   final List<String> _selectedAddOns = [];
-  List<String> _selectedContactMethod = [];
+  final List<String> _selectedContactMethod = [];
+  final List<Map<String, String>> carTypes = [
+    {"label": "كوبيه", "image": "assets/images/car1.png"},
+    {"label": "سيدان", "image": "assets/images/car2.png"},
+    {"label": "كروس اوفر", "image": "assets/images/car3.png"},
+    {"label": "سيارة مكشوفة", "image": "assets/images/car4.png"},
+    {"label": "سيارة رياضية", "image": "assets/images/car5.png"},
+    {"label": "جيب", "image": "assets/images/car6.png"},
+    {"label": "هاتشباك", "image": "assets/images/car7.png"},
+    {"label": "بيك أب", "image": "assets/images/car8.png"},
+    {"label": "شاحنة صغيرة/فان", "image": "assets/images/car9.png"},
+  ];
   final List<String> contactMethods = [
     "موبايل",
     "شات",
+  ];
+  final List<String> years = [
+    "",
+    "1920",
+    "1921",
+    "1922",
+    "1923",
+    "1924",
+    "1925",
+    "1926",
+    "1927",
+    "1928",
+    "1929",
+    "1930",
+    "1931",
+    "1932",
+    "1933",
+    "1934",
+    "1935",
+    "1936",
+    "1937",
+    "1938",
+    "1939",
+    "1940",
+    "1941",
+    "1942",
+    "1943",
+    "1944",
+    "1945",
+    "1946",
+    "1947",
+    "1948",
+    "1949",
+    "1950",
+    "1951",
+    "1952",
+    "1953",
+    "1954",
+    "1955",
+    "1956",
+    "1957",
+    "1958",
+    "1959",
+    "1960",
+    "1961",
+    "1962",
+    "1963",
+    "1964",
+    "1965",
+    "1966",
+    "1967",
+    "1968",
+    "1969",
+    "1970",
+    "1971",
+    "1972",
+    "1973",
+    "1974",
+    "1975",
+    "1976",
+    "1977",
+    "1978",
+    "1979",
+    "1980",
+    "1981",
+    "1982",
+    "1983",
+    "1984",
+    "1985",
+    "1986",
+    "1987",
+    "1988",
+    "1989",
+    "1990",
+    "1991",
+    "1992",
+    "1993",
+    "1994",
+    "1995",
+    "1996",
+    "1997",
+    "1998",
+    "1999",
+    "2000",
+    "2001",
+    "2002",
+    "2003",
+    "2004",
+    "2005",
+    "2006",
+    "2007",
+    "2008",
+    "2009",
+    "2010",
+    "2011",
+    "2012",
+    "2013",
+    "2014",
+    "2015",
+    "2016",
+    "2017",
+    "2018",
+    "2019",
+    "2020",
+    "2021",
+    "2022",
+    "2023",
+    "2024",
+    "2025",
+    "2026"
   ];
   final List<String> isOwner = [
     "المالك",
@@ -104,18 +236,29 @@ class _CarsForSaleFormState extends State<CarsForSaleForm> {
     "كاش أو تقسيط",
   ];
   final List<String> addOns = [
+    "نظام الفرامل ABS",
+    "نظام النقطة العمياء",
+    "مراقب ضغط الإطارات",
+    "قفل مركزي",
+    "مقاعد كهربائية",
+    "دخول بدون مفتاح",
+    "مقاعد مساج",
+    "مقاعد مدفئة",
+    "مقود مدفئ",
+    "مثبت سرعة",
+    "فتحة سقف",
+    "سقف بانورامي",
     "وسائد هوائية",
-    "راديو",
-    "نوافذ كهربائية",
-    "مرايا كهربائية",
     "نظام بلوتوث",
-    "شاحن يو اس بى",
+    "مرايا كهربائية",
   ];
+
   final List<String> fuelTypes = [
     "بنزين",
     "كهرباء",
     "غاز طبيعى",
     "ديزل",
+    "هيبرد",
   ];
   final List<String> transmissions = [
     "اتوماتيك",
@@ -136,8 +279,16 @@ class _CarsForSaleFormState extends State<CarsForSaleForm> {
   void _scrollToFirstInvalidField() {
     final invalidFields = [
       if (_selectedBrand == null) _fieldKeys['brand'],
+      if (_selectedImported == null)
+        _fieldKeys['imported'], /////////////////////////////////
+      if (_selectedBumper == null)
+        _fieldKeys['bumber'], /////////////////////////////////
       if (_versionController.text.isEmpty) _fieldKeys['version'],
       if (_modelController.text.isEmpty) _fieldKeys['model'],
+      if (_horsePowerController.text.isEmpty)
+        _fieldKeys['horsePower'], //////////////////////
+      if (_engineCapacityController.text.isEmpty)
+        _fieldKeys['engineCapacity'], /////////////////////
       if (_colorController.text.isEmpty) _fieldKeys['color'],
       if (_doorsController.text.isEmpty) _fieldKeys['doors'],
       if (_innerPartController.text.isEmpty) _fieldKeys['interior'],
@@ -155,6 +306,9 @@ class _CarsForSaleFormState extends State<CarsForSaleForm> {
       if (_selectedTransmission.isEmpty) _fieldKeys['transmission'],
       if (_kilometerController.text.isEmpty) _fieldKeys['mileage'],
       if (_nameController.text.isEmpty) _fieldKeys['name'],
+      if (_phoneController.text.isEmpty) _fieldKeys['phone'],
+      if (_selectedYears == null) _fieldKeys['years'], //////////////////////
+      if (_selectedYears == null) _fieldKeys['years'],
       if (_phoneController.text.isEmpty) _fieldKeys['phone'],
     ];
 
@@ -219,14 +373,32 @@ class _CarsForSaleFormState extends State<CarsForSaleForm> {
             onChanged: (brand) => setState(() => _selectedBrand = brand!),
           ),
           const SizedBox(height: 25),
-          CustomLabeledTextField(
-            key: _fieldKeys['version'],
-            controller: _versionController,
-            validator: (value) =>
-                value!.isEmpty ? 'من فضلك ادخل نسخة السيارة' : null,
-            label: 'نسخة السيارة',
-            hint: "نسخة السيارة",
+          ChipSection(
+            key: _fieldKeys['saleType'],
+            title: 'بيع/ايجار',
+            items: saleOrRentChoices,
+            selectedItems: [_selectedSaleOrRent],
+            onSelect: (choice) => setState(() => _selectedSaleOrRent = choice),
           ),
+          const SizedBox(height: 25),
+          NumberField(
+            key: _fieldKeys['mileage'],
+            title: 'كيلومترات',
+            validator: (value) =>
+                value!.isEmpty ? 'من فضلك ادخل كيلومترات السيارة' : null,
+            controller: _kilometerController,
+            metric: 'Kms',
+          ),
+
+          // const SizedBox(height: 25),
+          // CustomLabeledTextField(
+          //   key: _fieldKeys['version'],
+          //   controller: _versionController,
+          //   validator: (value) =>
+          //       value!.isEmpty ? 'من فضلك ادخل نسخة السيارة' : null,
+          //   label: 'نسخة السيارة',
+          //   hint: "نسخة السيارة",
+          // ),
           const SizedBox(height: 25),
           CustomLabeledTextField(
             key: _fieldKeys['model'],
@@ -236,6 +408,52 @@ class _CarsForSaleFormState extends State<CarsForSaleForm> {
                 value!.isEmpty ? 'من فضلك ادخل موديل السيارة' : null,
             label: 'موديل السيارة',
             hint: "موديل السيارة",
+          ),
+
+          const SizedBox(height: 25),
+          Text(
+            'سنة الصنع',
+            style: TextStyle(
+              color: Theme.of(context).focusColor,
+              fontSize: 16,
+              fontFamily: 'Noor',
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+          const SizedBox(height: 10),
+          // CustomDropdown(
+          //   key: _fieldKeys['years'],
+          //   selectedValue: _selectedYears,
+          //   hint: "السنة....",
+          //   carOptions: AppConstants.cars,
+          //   onChanged: (years) => setState(() => _selectedYears = years!),
+          // ),
+          CustomDropdown(
+            key: _fieldKeys['years'],
+            selectedValue: _selectedYears,
+            hint: 'السنة....',
+            options: years,
+            onChanged: (years) => setState(() => _selectedYears = years!),
+          ),
+          const SizedBox(height: 25),
+          CustomLabeledTextField(
+            key: _fieldKeys['horsePower'],
+            controller: _horsePowerController,
+            keyboardType: TextInputType.number,
+            validator: (value) =>
+                value!.isEmpty ? 'من فضلك ادخل قوة الحصان للسيارة' : null,
+            label: 'قوة الحصان',
+            hint: "أدخل قوة الحصان",
+          ),
+          const SizedBox(height: 25),
+          CustomLabeledTextField(
+            key: _fieldKeys['engineCapacity'],
+            controller: _engineCapacityController,
+            keyboardType: TextInputType.number,
+            validator: (value) =>
+                value!.isEmpty ? 'من فضلك ادخل سعة المحرك للسيارة' : null,
+            label: 'سعة المحرك CC',
+            hint: "سعة المحرك",
           ),
           const SizedBox(height: 25),
           CustomLabeledTextField(
@@ -247,25 +465,62 @@ class _CarsForSaleFormState extends State<CarsForSaleForm> {
             hint: "لون السيارة",
           ),
           const SizedBox(height: 25),
-          CustomLabeledTextField(
-            key: _fieldKeys['doors'],
-            controller: _doorsController,
-            keyboardType: TextInputType.number,
-            validator: (value) =>
-                value!.isEmpty ? 'من فضلك ادخل عدد الابواب' : null,
-            label: 'عدد الابواب',
-            hint: "عدد الابواب",
+          Text(
+            'الدفع',
+            style: TextStyle(
+              color: Theme.of(context).focusColor,
+              fontSize: 16,
+              fontFamily: 'Noor',
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+          const SizedBox(height: 10),
+          CustomDropdown(
+            key: _fieldKeys['bumber'],
+            selectedValue: _selectedBumper,
+            hint: 'اختر نوع الدفع',
+            options: const ["أمامي", "خلفي", "رباعي"],
+            onChanged: (bumber) => setState(() => _selectedBumper = bumber!),
           ),
           const SizedBox(height: 25),
-          CustomLabeledTextField(
-            key: _fieldKeys['interior'],
-            controller: _innerPartController,
-            validator: (value) =>
-                value!.isEmpty ? 'من فضلك ادخل الجزء الداخلى' : null,
-            label: 'الجزء الداخلى',
-            hint: "الجزء الداخلى",
+          Text(
+            'الوارد',
+            style: TextStyle(
+              color: Theme.of(context).focusColor,
+              fontSize: 16,
+              fontFamily: 'Noor',
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+          const SizedBox(height: 10),
+          CustomDropdown(
+            key: _fieldKeys['imported'],
+            selectedValue: _selectedImported,
+            hint: 'الوارد',
+            options: const ["أمريكا", "اليابان", "أوروبا", "كندا", "الخليج"],
+            onChanged: (imported) =>
+                setState(() => _selectedImported = imported!),
           ),
           const SizedBox(height: 25),
+          // CustomLabeledTextField(
+          //   key: _fieldKeys['doors'],
+          //   controller: _doorsController,
+          //   keyboardType: TextInputType.number,
+          //   validator: (value) =>
+          //       value!.isEmpty ? 'من فضلك ادخل عدد الابواب' : null,
+          //   label: 'عدد الابواب',
+          //   hint: "عدد الابواب",
+          // ),
+          // const SizedBox(height: 25),
+          // CustomLabeledTextField(
+          //   key: _fieldKeys['interior'],
+          //   controller: _innerPartController,
+          //   validator: (value) =>
+          //       value!.isEmpty ? 'من فضلك ادخل الجزء الداخلى' : null,
+          //   label: 'الجزء الداخلى',
+          //   hint: "الجزء الداخلى",
+          // ),
+          // const SizedBox(height: 25),
           NumbersSection(
             key: _fieldKeys['seats'],
             title: 'عدد المقاعد',
@@ -280,152 +535,6 @@ class _CarsForSaleFormState extends State<CarsForSaleForm> {
             items: newOrUsedChoices,
             selectedItems: [_selectedCarType],
             onSelect: (choice) => setState(() => _selectedCarType = choice),
-          ),
-          const SizedBox(height: 25),
-          CheckBoxesSection(
-            key: _fieldKeys['owner'],
-            title: 'تم النشر من قبل',
-            items: isOwner,
-            selectedItems: [_owner],
-            onChanged: (status) {
-              setState(() {
-                _owner = _owner == status ? '' : status;
-              });
-            },
-          ),
-          const SizedBox(height: 25),
-          ChipSection(
-            key: _fieldKeys['saleType'],
-            title: 'بيع/ايجار',
-            items: saleOrRentChoices,
-            selectedItems: [_selectedSaleOrRent],
-            onSelect: (choice) => setState(() => _selectedSaleOrRent = choice),
-          ),
-          const SizedBox(height: 25),
-          CustomLabeledTextField(
-            key: _fieldKeys['adTitle'],
-            controller: _adTitleController,
-            validator: (value) =>
-                value!.isEmpty ? 'من فضلك ادخل عنوان الاعلان' : null,
-            label: 'عنوان الاعلان',
-            hint: "ادخل عنوان الاعلان",
-          ),
-          const SizedBox(height: 25),
-          CustomLabeledTextField(
-            key: _fieldKeys['description'],
-            controller: _descriptionController,
-            validator: (value) =>
-                value!.isEmpty ? 'من فضلك ادخل وصف الاعلان' : null,
-            label: 'وصف الاعلان',
-            hint: "الوصف",
-            maxLines: 4,
-          ),
-          const SizedBox(height: 25),
-          Text(
-            'المحافظة',
-            style: TextStyle(
-              color: Theme.of(context).focusColor,
-              fontSize: 16,
-              fontFamily: 'Noor',
-              fontWeight: FontWeight.w700,
-            ),
-          ),
-          const SizedBox(height: 10),
-          CustomDropdown(
-            key: _fieldKeys['city'],
-            selectedValue: _selectedCity,
-            hint: 'اختر المحافظة',
-            options: AppConstants.cityLists,
-            onChanged: (city) => setState(() => _selectedCity = city!),
-          ),
-          const SizedBox(height: 25),
-          InkWell(
-            onTap: () async {
-              final locationData = await Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => MultiBlocProvider(
-                    providers: [
-                      BlocProvider(create: (context) => locator<NewAdCubit>())
-                    ],
-                    child: const GoogleMapScreen(),
-                  ),
-                ),
-              );
-
-              if (locationData != null) {
-                setState(() {
-                  _locationController.text = locationData['address'] ??
-                      "${locationData['lat']}, ${locationData['lng']}";
-                  lat = locationData['lat'] is double
-                      ? locationData['lat']
-                      : double.tryParse(locationData['lat'].toString());
-                  long = locationData['lng'] is double
-                      ? locationData['lng']
-                      : double.tryParse(locationData['lng'].toString());
-                });
-              }
-            },
-            child: CustomLabeledTextField(
-              key: _fieldKeys['location'],
-              enabled: false,
-              controller: _locationController,
-              validator: (value) => value!.isEmpty ? 'ادخل موقع السيارة' : null,
-              label: 'موقع السيارة',
-              hint: "ادخل موقع السيارة",
-              suffix: const Icon(Icons.location_on),
-            ),
-          ),
-          const SizedBox(height: 25),
-          Text(
-            "العملة",
-            style: TextStyle(
-              color: Theme.of(context).focusColor,
-              fontSize: 16,
-              fontFamily: 'Noor',
-              fontWeight: FontWeight.w700,
-            ),
-          ),
-          const SizedBox(height: 10),
-          CustomDropdown(
-            key: _fieldKeys['currency'],
-            selectedValue: _dollarOrLera,
-            hint: "اختر العملة",
-            options: const ['دولار', 'ليره'],
-            onChanged: (currency) => setState(() => _dollarOrLera = currency!),
-          ),
-          const SizedBox(height: 25),
-          CheckBoxesSection(
-            key: _fieldKeys['payment'],
-            title: 'طريقة الدفع',
-            items: paymentMethods,
-            selectedItems: [_selectedPaymentMethod],
-            onChanged: (paymentMethod) {
-              setState(() {
-                _selectedPaymentMethod = _selectedPaymentMethod == paymentMethod
-                    ? ''
-                    : paymentMethod;
-              });
-            },
-          ),
-          const SizedBox(height: 25),
-          CustomLabeledTextField(
-            key: _fieldKeys['price'],
-            controller: _priceController,
-            keyboardType: TextInputType.number,
-            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-            validator: (value) =>
-                value!.isEmpty ? 'من فضلك ادخل سعر السيارة' : null,
-            label: 'سعر السيارة',
-            hint: _dollarOrLera != 'دولار'
-                ? "ادخل سعر السيارة ... SYP"
-                : "ادخل سعر السيارة ... USD",
-          ),
-          const SizedBox(height: 10),
-          CustomCheckBox(
-            text: "قابل للتفاوض",
-            isChecked: _negotiable,
-            onChanged: (value) => setState(() => _negotiable = value!),
           ),
           const SizedBox(height: 25),
           CheckBoxesSection(
@@ -471,15 +580,197 @@ class _CarsForSaleFormState extends State<CarsForSaleForm> {
             },
           ),
           const SizedBox(height: 25),
-          NumberField(
-            key: _fieldKeys['mileage'],
-            title: 'كيلومترات',
-            validator: (value) =>
-                value!.isEmpty ? 'من فضلك ادخل كيلومترات السيارة' : null,
-            controller: _kilometerController,
-            metric: 'Kms',
+
+          SizedBox(
+            height: 400,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'نوع السيارة',
+                  style: TextStyle(
+                    color: Theme.of(context).focusColor,
+                    fontSize: 16,
+                    fontFamily: 'Noor',
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Expanded(
+                  child: GridView.count(
+                    crossAxisCount: 3,
+                    crossAxisSpacing: 0,
+                    mainAxisSpacing: 15,
+
+                    // padding: const EdgeInsets.all(2),
+                    children: [
+                      ...carTypes.map(
+                        (car) => _buildCarCard(
+                          car['label']!,
+                          car['image']!,
+                          onSelect: (value) {
+                            setState(() {
+                              selectedCarTypeeee = value;
+                            });
+                            print("Selected: $value");
+                          },
+                        ),
+                      ),
+                      _buildOtherCard(context, (value) {
+                        setState(() {
+                          selectedCarTypeeee = value;
+                        });
+                        print("Selected from others: $value");
+                      }),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
           const SizedBox(height: 25),
+          CheckBoxesSection(
+            key: _fieldKeys['owner'],
+            title: 'تم النشر الإعلان من قبل',
+            items: isOwner,
+            selectedItems: [_owner],
+            onChanged: (status) {
+              setState(() {
+                _owner = _owner == status ? '' : status;
+              });
+            },
+          ),
+
+          const SizedBox(height: 25),
+          CustomLabeledTextField(
+            key: _fieldKeys['adTitle'],
+            controller: _adTitleController,
+            validator: (value) =>
+                value!.isEmpty ? 'من فضلك ادخل عنوان الاعلان' : null,
+            label: 'عنوان الاعلان',
+            hint: "ادخل عنوان الاعلان",
+          ),
+          const SizedBox(height: 25),
+          CustomLabeledTextField(
+            key: _fieldKeys['description'],
+            controller: _descriptionController,
+            validator: (value) =>
+                value!.isEmpty ? 'من فضلك ادخل وصف الاعلان' : null,
+            label: 'وصف الاعلان',
+            hint: "الوصف",
+            maxLines: 4,
+          ),
+          const SizedBox(height: 25),
+          InkWell(
+            onTap: () async {
+              final locationData = await Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => MultiBlocProvider(
+                    providers: [
+                      BlocProvider(create: (context) => locator<NewAdCubit>())
+                    ],
+                    child: const GoogleMapScreen(),
+                  ),
+                ),
+              );
+
+              if (locationData != null) {
+                setState(() {
+                  _locationController.text = locationData['address'] ??
+                      "${locationData['lat']}, ${locationData['lng']}";
+                  lat = locationData['lat'] is double
+                      ? locationData['lat']
+                      : double.tryParse(locationData['lat'].toString());
+                  long = locationData['lng'] is double
+                      ? locationData['lng']
+                      : double.tryParse(locationData['lng'].toString());
+                });
+              }
+            },
+            child: CustomLabeledTextField(
+              key: _fieldKeys['location'],
+              enabled: false,
+              controller: _locationController,
+              validator: (value) => value!.isEmpty ? 'ادخل موقع السيارة' : null,
+              label: 'موقع السيارة',
+              hint: "ادخل موقع السيارة",
+              suffix: const Icon(Icons.location_on),
+            ),
+          ),
+          const SizedBox(height: 25),
+          Text(
+            'المحافظة',
+            style: TextStyle(
+              color: Theme.of(context).focusColor,
+              fontSize: 16,
+              fontFamily: 'Noor',
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+          const SizedBox(height: 10),
+
+          CustomDropdown(
+            key: _fieldKeys['city'],
+            selectedValue: _selectedCity,
+            hint: 'اختر المحافظة',
+            options: AppConstants.cityLists,
+            onChanged: (city) => setState(() => _selectedCity = city!),
+          ),
+          const SizedBox(height: 25),
+          CustomLabeledTextField(
+            key: _fieldKeys['price'],
+            controller: _priceController,
+            keyboardType: TextInputType.number,
+            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+            validator: (value) =>
+                value!.isEmpty ? 'من فضلك ادخل سعر السيارة' : null,
+            label: 'سعر السيارة',
+            hint: _dollarOrLera != 'دولار'
+                ? "ادخل سعر السيارة ... SYP"
+                : "ادخل سعر السيارة ... USD",
+          ),
+          const SizedBox(height: 10),
+          CustomCheckBox(
+            text: "قابل للتفاوض",
+            isChecked: _negotiable,
+            onChanged: (value) => setState(() => _negotiable = value!),
+          ),
+
+          const SizedBox(height: 25),
+          CheckBoxesSection(
+            key: _fieldKeys['payment'],
+            title: 'طريقة الدفع',
+            items: paymentMethods,
+            selectedItems: [_selectedPaymentMethod],
+            onChanged: (paymentMethod) {
+              setState(() {
+                _selectedPaymentMethod = _selectedPaymentMethod == paymentMethod
+                    ? ''
+                    : paymentMethod;
+              });
+            },
+          ),
+          const SizedBox(height: 25),
+          Text(
+            "العملة",
+            style: TextStyle(
+              color: Theme.of(context).focusColor,
+              fontSize: 16,
+              fontFamily: 'Noor',
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+          const SizedBox(height: 10),
+          CustomDropdown(
+            key: _fieldKeys['currency'],
+            selectedValue: _dollarOrLera,
+            hint: "اختر العملة",
+            options: const ['دولار', 'ليره'],
+            onChanged: (currency) => setState(() => _dollarOrLera = currency!),
+          ),
+          const SizedBox(height: 25),
+
           Text(
             'معلومات التواصل',
             textAlign: TextAlign.right,
@@ -554,6 +845,12 @@ class _CarsForSaleFormState extends State<CarsForSaleForm> {
       type: _selectedCarType,
       color: _colorController.text.trim(),
       year: _modelController.text.trim(),
+      horsePower: _horsePowerController.text.trim(), //////////////////
+      engineCapacity: _engineCapacityController.text.trim(), ////////////
+      drivetrain: _selectedBumper, ////////////////
+      imported: _selectedImported, ///////////
+      manufacturingYear: _selectedYears, //////////////
+      carType: selectedCarTypeeee,
       doors: _doorsController.text.trim(),
       version: _versionController.text.trim(),
       innerpart: _innerPartController.text.trim(),
@@ -612,6 +909,18 @@ class _CarsForSaleFormState extends State<CarsForSaleForm> {
       AppMessages.showError(context, 'اختر المحافظة');
       return false;
     }
+    if (_selectedYears == null) {
+      AppMessages.showError(context, 'اختر سنة الصنع');
+      return false;
+    }
+    if (_selectedBumper == null) {
+      AppMessages.showError(context, 'اختر قوة الدفع');
+      return false;
+    }
+    if (_selectedImported == null) {
+      AppMessages.showError(context, 'اختر الوارد');
+      return false;
+    }
     if (_dollarOrLera.isEmpty) {
       AppMessages.showError(context, 'اختر العملة');
       return false;
@@ -643,5 +952,108 @@ class _CarsForSaleFormState extends State<CarsForSaleForm> {
     }
 
     return _formKey.currentState!.validate();
+  }
+
+  Widget _buildCarCard(String label, String imagePath,
+      {required void Function(String) onSelect}) {
+    return GestureDetector(
+      onTap: () => onSelect(label),
+      child: Card(
+        surfaceTintColor: Colors.transparent,
+        color: Colors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+          side: BorderSide(color: Colors.black),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(5.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(imagePath),
+              const SizedBox(height: 8),
+              Text(
+                label,
+                style:
+                    const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildOtherCard(BuildContext context, void Function(String) onSelect) {
+    final List<String> moreCarTypes = [
+      "ليموزين",
+      "سيارة كلاسيكية",
+      "سيارة كهربائية",
+      "ميني فان",
+      "شاحنة نقل",
+      "دراجة نارية بثلاث عجلات",
+      "عربة سكن متنقلة",
+      "غير ذالك"
+    ];
+
+    return GestureDetector(
+      onTap: () {
+        showModalBottomSheet(
+          context: context,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+          ),
+          isScrollControlled: true,
+          builder: (_) => Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Text(
+                  "أنواع سيارات إضافية",
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 10),
+                Flexible(
+                  child: ListView.separated(
+                    shrinkWrap: true,
+                    itemCount: moreCarTypes.length,
+                    separatorBuilder: (_, __) => const Divider(),
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                        title: Text(moreCarTypes[index]),
+                        leading: const Icon(Icons.directions_car),
+                        onTap: () {
+                          Navigator.pop(context);
+                          onSelect(moreCarTypes[index]); // ✅ return selected
+                        },
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+      child: Card(
+        surfaceTintColor: Colors.transparent,
+        color: Colors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+          side: const BorderSide(color: Colors.black),
+        ),
+        child: const Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.more_horiz, size: 30),
+              SizedBox(height: 8),
+              Text("غير ذلك", style: TextStyle(fontSize: 14)),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

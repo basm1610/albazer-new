@@ -81,15 +81,17 @@ class DetailsCard extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          SizedBox(
-            width: 75,
-            child: Text(
-              model.tilte ?? '',
-              style: TextStyle(
-                color: Theme.of(context).hoverColor,
-                fontSize: 13,
-                fontFamily: 'Noor',
-                fontWeight: FontWeight.w400,
+          Card(
+            child: SizedBox(
+              width: 60,
+              child: Text(
+                model.tilte ?? '',
+                style: TextStyle(
+                  color: Theme.of(context).hoverColor,
+                  fontSize: 13,
+                  fontFamily: 'Noor',
+                  fontWeight: FontWeight.w400,
+                ),
               ),
             ),
           ),

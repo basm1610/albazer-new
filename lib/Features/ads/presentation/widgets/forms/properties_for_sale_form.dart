@@ -34,9 +34,10 @@ class _PropertiesForSaleFormState extends State<PropertiesForSaleForm> {
   final Map<String, GlobalKey> _fieldKeys = {
     'building': GlobalKey(),
     'area': GlobalKey(),
-    'floor': GlobalKey(),
+    'floor': GlobalKey(), ///////
     'luxuries': GlobalKey(),
     'rooms': GlobalKey(),
+    'salons': GlobalKey(),/////////////
     'bathrooms': GlobalKey(),
     'furniture': GlobalKey(),
     'inOrOut': GlobalKey(),
@@ -54,6 +55,8 @@ class _PropertiesForSaleFormState extends State<PropertiesForSaleForm> {
     'name': GlobalKey(),
     'phone': GlobalKey(),
     'contact': GlobalKey(),
+    'floorNum': GlobalKey(),//////////
+    'deed': GlobalKey(),//////////////
   };
   final TextEditingController _areaController = TextEditingController(),
       _floorController = TextEditingController(),
@@ -81,7 +84,7 @@ class _PropertiesForSaleFormState extends State<PropertiesForSaleForm> {
     final invalidFields = [
       if (_selectedBuilding.isEmpty) _fieldKeys['building'],
       if (_areaController.text.isEmpty) _fieldKeys['area'],
-      if (_floorController.text.isEmpty) _fieldKeys['floor'],
+      // if (_floorController.text.isEmpty) _fieldKeys['floor'],
       if (_selectedInOrOut.isEmpty) _fieldKeys['inOrOut'],
       if (_owner.isEmpty) _fieldKeys['owner'],
       if (_selectedBuildingStatus.isEmpty) _fieldKeys['status'],
@@ -95,6 +98,11 @@ class _PropertiesForSaleFormState extends State<PropertiesForSaleForm> {
       if (_selectedBuildingAge == null) _fieldKeys['age'],
       if (_nameController.text.isEmpty) _fieldKeys['name'],
       if (_phoneController.text.isEmpty) _fieldKeys['phone'],
+      if (_selectedFloor == null) _fieldKeys['floor'],//////
+      if (_selectedFloorNum == null) _fieldKeys['floorNum'],//////
+      if (_selectedDeed == null) _fieldKeys['deed'],////////
+
+
     ];
 
     if (invalidFields.isNotEmpty) {
@@ -112,7 +120,7 @@ class _PropertiesForSaleFormState extends State<PropertiesForSaleForm> {
   final List<String> _selectedLuxuries = [];
   List<String> _selectedContactMethod = [];
 
-  int _selectedRoom = 0, _selectedBathroom = 0;
+  int _selectedRoom = 0, _selectedBathroom = 0, _selectedSalons = 0;
 
   final List<String> buildings = [
     "شقة",
@@ -125,6 +133,46 @@ class _PropertiesForSaleFormState extends State<PropertiesForSaleForm> {
     "مكتب",
     "مصنع",
     "مقهى",
+  ];
+  final List<String> deeds = [
+    "أخضر طابو (طابو نظامي)",
+    "طابو زراعي",
+    "حكم محكة",
+    "كاتب عدل",
+  ];
+  final List<String> floor = [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "10",
+    "11",
+    "12",
+    "13",
+    "14",
+    "15",
+  ];
+  final List<String> floorNum = [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "10",
+    "11",
+    "12",
+    "13",
+    "14",
+    "15",
   ];
   final List<String> furnitureChoices = [
     "نعم",
@@ -148,13 +196,17 @@ class _PropertiesForSaleFormState extends State<PropertiesForSaleForm> {
     "شات",
   ];
   final List<String> luxuries = [
+    "مصعد",
+    "طاقة شمسية",
+    "تدفئة",
+    "غاز مركزي",
+    "أمن",
+    "موقف سيارات",
     "بلكون",
     "أجهزة المطبخ",
     "حديقة خاصة",
-    "أمن",
-    "موقف سيارات",
     "حمام سباحة",
-    "تليفون أرضى",
+    "مدخل مستقل",
   ];
   final List<String> buildingStatus = [
     "جاهز",
@@ -176,6 +228,9 @@ class _PropertiesForSaleFormState extends State<PropertiesForSaleForm> {
   ];
   String _dollarOrLera = 'ليره';
   String? _selectedCity;
+  String? _selectedFloor;
+  String? _selectedFloorNum;
+  String? _selectedDeed;
   @override
   void dispose() {
     _areaController.dispose();
@@ -222,65 +277,15 @@ class _PropertiesForSaleFormState extends State<PropertiesForSaleForm> {
               },
             ),
             const SizedBox(height: 25),
-            CustomLabeledTextField(
-              key: _fieldKeys['area'],
-              controller: _areaController,
-              keyboardType: TextInputType.number,
-              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-              validator: (area) => area!.isEmpty ? 'ادخل مساحة العقار' : null,
-              label: 'المساحة (م٢)*',
-              hint: "ادخل مساحة العقار ...",
-            ),
-            const SizedBox(height: 25),
-            CustomLabeledTextField(
-              key: _fieldKeys['floor'],
-              controller: _floorController,
-              keyboardType: TextInputType.number,
-              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-              validator: (floor) => floor!.isEmpty ? 'ادخل الطابق' : null,
-              label: 'الطابق',
-              hint: "ادخل الطابق ...",
-            ),
-            const SizedBox(height: 25),
-            ChipSection(
-              key: _fieldKeys['luxuries'],
-              title: 'الكماليات',
-              items: luxuries,
-              selectedItems: _selectedLuxuries,
-              onSelect: (luxury) {
+            CheckBoxesSection(
+              key: _fieldKeys['status'],
+              title: 'حالة العقار',
+              items: buildingStatus,
+              selectedItems: [_selectedBuildingStatus],
+              onChanged: (status) {
                 setState(() {
-                  _selectedLuxuries.contains(luxury)
-                      ? _selectedLuxuries.remove(luxury)
-                      : _selectedLuxuries.add(luxury);
-                });
-              },
-            ),
-            const SizedBox(height: 25),
-            NumbersSection(
-              key: _fieldKeys['rooms'],
-              title: 'عدد الغرف',
-              maxNumbers: 7,
-              selectedNumber: _selectedRoom,
-              onSelect: (room) => setState(() => _selectedRoom = room),
-            ),
-            const SizedBox(height: 25),
-            NumbersSection(
-              key: _fieldKeys['bathrooms'],
-              title: 'عدد الحمامات',
-              maxNumbers: 7,
-              selectedNumber: _selectedBathroom,
-              onSelect: (bathroom) =>
-                  setState(() => _selectedBathroom = bathroom),
-            ),
-            const SizedBox(height: 25),
-            ChipSection(
-              key: _fieldKeys['furniture'],
-              title: 'الفرش',
-              items: furnitureChoices,
-              selectedItems: [_selectedChoice],
-              onSelect: (choice) {
-                setState(() {
-                  _selectedChoice = _selectedChoice == choice ? '' : choice;
+                  _selectedBuildingStatus =
+                      _selectedBuildingStatus == status ? '' : status;
                 });
               },
             ),
@@ -297,27 +302,137 @@ class _PropertiesForSaleFormState extends State<PropertiesForSaleForm> {
               },
             ),
             const SizedBox(height: 25),
-            CheckBoxesSection(
-              key: _fieldKeys['owner'],
-              title: 'تم النشر من قبل',
-              items: isOwner,
-              selectedItems: [_owner],
-              onChanged: (status) {
+            CustomLabeledTextField(
+              key: _fieldKeys['area'],
+              controller: _areaController,
+              keyboardType: TextInputType.number,
+              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+              validator: (area) => area!.isEmpty ? 'ادخل مساحة العقار' : null,
+              label: 'المساحة (م٢)*',
+              hint: "ادخل مساحة العقار ...",
+            ),
+            const SizedBox(height: 25),
+            Text(
+              'الطابق',
+              style: TextStyle(
+                color: Theme.of(context).focusColor,
+                fontSize: 16,
+                fontFamily: 'Noor',
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+            const SizedBox(height: 15),
+            // CustomLabeledTextField(
+            //   key: _fieldKeys['floor'],
+            //   controller: _floorController,
+            //   keyboardType: TextInputType.number,
+            //   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+            //   validator: (floor) => floor!.isEmpty ? 'ادخل الطابق' : null,
+            //   label: 'الطابق',
+            //   hint: "ادخل الطابق ...",
+            // ),
+            CustomDropdown(
+              key: _fieldKeys['floor'],
+              selectedValue: _selectedFloor,
+              hint: 'ادخل الطابق ...',
+              options: floor,
+              onChanged: (floor) => setState(() => _selectedFloor = floor!),
+            ),
+
+            const SizedBox(height: 25),
+
+            Text(
+              'عدد الطوابق',
+              style: TextStyle(
+                color: Theme.of(context).focusColor,
+                fontSize: 16,
+                fontFamily: 'Noor',
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+            const SizedBox(height: 15),
+            CustomDropdown(
+              key: _fieldKeys['floorNum'],
+              selectedValue: _selectedFloorNum,
+              hint: 'ادخل عدد الطوابق ...',
+              options: floorNum,
+              onChanged: (floorNum) =>
+                  setState(() => _selectedFloorNum = floorNum!),
+            ),
+            const SizedBox(height: 25),
+            NumbersSection(
+              key: _fieldKeys['rooms'],
+              title: 'عدد الغرف',
+              maxNumbers: 7,
+              selectedNumber: _selectedRoom,
+              onSelect: (room) => setState(() => _selectedRoom = room),
+            ),
+            const SizedBox(height: 25),
+            NumbersSection(
+              key: _fieldKeys['salons'],
+              title: 'عدد الصالونات',
+              maxNumbers: 5,
+              selectedNumber: _selectedSalons,
+              onSelect: (salon) => setState(() => _selectedSalons = salon),
+            ),
+            const SizedBox(height: 25),
+            NumbersSection(
+              key: _fieldKeys['bathrooms'],
+              title: 'عدد الحمامات',
+              maxNumbers: 7,
+              selectedNumber: _selectedBathroom,
+              onSelect: (bathroom) =>
+                  setState(() => _selectedBathroom = bathroom),
+            ),
+            const SizedBox(height: 25),
+            Text(
+              "عمر المبنى",
+              style: TextStyle(
+                color: Theme.of(context).focusColor,
+                fontSize: 16,
+                fontFamily: 'Noor',
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+            const SizedBox(height: 10),
+            CustomDropdown(
+              key: _fieldKeys['age'],
+              // label: 'عمر المبنى',
+              hint: "أدخل عمر المبنى",
+              selectedValue: _selectedBuildingAge,
+              options: List.generate(
+                101,
+                (index) => '$index',
+              ),
+              onChanged: (value) {
+                _selectedBuildingAge = value!;
+              },
+            ),
+
+            const SizedBox(height: 25),
+            ChipSection(
+              key: _fieldKeys['furniture'],
+              title: 'الفرش',
+              items: furnitureChoices,
+              selectedItems: [_selectedChoice],
+              onSelect: (choice) {
                 setState(() {
-                  _owner = _owner == status ? '' : status;
+                  _selectedChoice = _selectedChoice == choice ? '' : choice;
                 });
               },
             ),
             const SizedBox(height: 25),
-            CheckBoxesSection(
-              key: _fieldKeys['status'],
-              title: 'حالة العقار',
-              items: buildingStatus,
-              selectedItems: [_selectedBuildingStatus],
-              onChanged: (status) {
+
+            ChipSection(
+              key: _fieldKeys['luxuries'],
+              title: 'الكماليات',
+              items: luxuries,
+              selectedItems: _selectedLuxuries,
+              onSelect: (luxury) {
                 setState(() {
-                  _selectedBuildingStatus =
-                      _selectedBuildingStatus == status ? '' : status;
+                  _selectedLuxuries.contains(luxury)
+                      ? _selectedLuxuries.remove(luxury)
+                      : _selectedLuxuries.add(luxury);
                 });
               },
             ),
@@ -334,6 +449,20 @@ class _PropertiesForSaleFormState extends State<PropertiesForSaleForm> {
                 });
               },
             ),
+            const SizedBox(height: 25),
+
+            CheckBoxesSection(
+              key: _fieldKeys['owner'],
+              title: 'تم النشر من قبل',
+              items: isOwner,
+              selectedItems: [_owner],
+              onChanged: (status) {
+                setState(() {
+                  _owner = _owner == status ? '' : status;
+                });
+              },
+            ),
+
             const SizedBox(height: 25),
             CustomLabeledTextField(
               key: _fieldKeys['adTitle'],
@@ -463,17 +592,8 @@ class _PropertiesForSaleFormState extends State<PropertiesForSaleForm> {
               onChanged: (value) => setState(() => _negotiable = value!),
             ),
             const SizedBox(height: 25),
-            // CustomLabeledTextField(
-            //   key: _fieldKeys['age'],
-            //   controller: _buildingAgeontroller,
-            //   keyboardType: TextInputType.number,
-            //   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-            //   validator: (age) => age!.isEmpty ? 'ادخل عمر المبنى' : null,
-            //   label: 'عمر المبنى',
-            //   hint: "أدخل عمر المبنى",
-            // ),
             Text(
-              "عمر المبنى",
+              "الطابو",
               style: TextStyle(
                 color: Theme.of(context).focusColor,
                 fontSize: 16,
@@ -483,19 +603,23 @@ class _PropertiesForSaleFormState extends State<PropertiesForSaleForm> {
             ),
             const SizedBox(height: 10),
             CustomDropdown(
-              key: _fieldKeys['age'],
-              // label: 'عمر المبنى',
-              hint: "أدخل عمر المبنى",
-              selectedValue: _selectedBuildingAge,
-              options: List.generate(
-                101,
-                (index) => '$index',
-              ),
-              onChanged: (value) {
-                _selectedBuildingAge = value!;
-              },
+              key: _fieldKeys['deed'],
+              selectedValue: _selectedDeed,
+              hint: "اختر الطابو",
+              options: deeds,
+              onChanged: (deed) => setState(() => _selectedDeed = deed!),
             ),
             const SizedBox(height: 25),
+            // CustomLabeledTextField(
+            //   key: _fieldKeys['age'],
+            //   controller: _buildingAgeontroller,
+            //   keyboardType: TextInputType.number,
+            //   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+            //   validator: (age) => age!.isEmpty ? 'ادخل عمر المبنى' : null,
+            //   label: 'عمر المبنى',
+            //   hint: "أدخل عمر المبنى",
+            // ),
+
             Text(
               'معلومات التواصل',
               textAlign: TextAlign.right,
@@ -545,11 +669,12 @@ class _PropertiesForSaleFormState extends State<PropertiesForSaleForm> {
             const SizedBox(height: 25),
             SubmitAdButton(
               onPressed: () {
-                if (_formKey.currentState!.validate()) {
-                  _submit(context);
-                } else {
-                  _scrollToFirstInvalidField();
-                }
+                // if (_formKey.currentState!.validate()) {
+                _submit(context);
+                // } else {
+                //   // _scrollToFirstInvalidField();
+                log("errrrrrrrrrrrrrrrrrrrrrrrrrrrrrrro");
+                // }
               },
             ),
             const SizedBox(height: 25),
@@ -568,7 +693,10 @@ class _PropertiesForSaleFormState extends State<PropertiesForSaleForm> {
       adTitle: _adTitleController.text.trim(),
       description: _descriptionController.text.trim(),
       area: num.parse(_areaController.text.trim()),
-      floor: _floorController.text.trim(),
+      floor:
+          // _floorController.text.trim()
+          _selectedFloor, //change<<<<<<
+      floorNumber: _selectedFloorNum,
       regulationStatus: _selectedInOrOut,
       propertyType: _selectedBuilding,
       propertyLocation: _locationController.text.trim(),
@@ -583,6 +711,8 @@ class _PropertiesForSaleFormState extends State<PropertiesForSaleForm> {
       furnishing: _selectedChoice == furnitureChoices.first,
       numberOfBathrooms: _selectedBathroom,
       numberOfRooms: _selectedRoom,
+      numberOfSalons: _selectedSalons,
+      deed: _selectedDeed,
       imageFiles: _images,
       deliveryConditions: _selectedDeliveryTerm,
       propertyCondition: _selectedBuildingStatus,
@@ -630,6 +760,18 @@ class _PropertiesForSaleFormState extends State<PropertiesForSaleForm> {
       AppMessages.showError(context, 'اختر المحافظة');
       return false;
     }
+    if (_selectedFloor == null) {
+      AppMessages.showError(context, 'اختر الطابق');///////////
+      return false;
+    }
+    if (_selectedFloorNum == null) {
+      AppMessages.showError(context, 'اختر عدد الطوابق');///////////////
+      return false;
+    }
+        if (_selectedDeed == null) {
+      AppMessages.showError(context, 'اختر نوع الطابو ');///////////////
+      return false;
+    }
     if (_selectedLuxuries.isEmpty) {
       AppMessages.showError(context, 'ادخل الكماليات');
       return false;
@@ -637,6 +779,10 @@ class _PropertiesForSaleFormState extends State<PropertiesForSaleForm> {
 
     if (_selectedRoom == 0) {
       AppMessages.showError(context, 'ادخل عدد الغرف');
+      return false;
+    }
+    if (_selectedSalons == 0) {
+      AppMessages.showError(context, 'ادخل عدد الصالونات');////////////////
       return false;
     }
 

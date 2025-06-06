@@ -11,31 +11,69 @@ class NotificationService {
   static FirebaseMessaging messaging = FirebaseMessaging.instance;
 
   /// Initialize FCM - should be called after login
-  static Future<void> init() async {
-    await messaging.requestPermission();
+  // static Future<void> init() async {
+  //   await messaging.requestPermission();
 
+  //   String? token = await messaging.getToken();
+  //   sendTokenToServer(token!);
+  //   log("FCM Token: $token");
+
+  //   final prefs = await SharedPreferences.getInstance();
+  //   await prefs.setString('fcm_token', token);
+  
+  //   messaging.onTokenRefresh.listen((newToken) async {
+  //     sendTokenToServer(newToken);
+  //     log("Refreshed FCM Token: $newToken");
+
+  //     final prefs = await SharedPreferences.getInstance();
+  //     await prefs.setString('fcm_token', newToken);
+  //   });
+
+  //   FirebaseMessaging.onBackgroundMessage(_handleBackgroundMessage);
+  //   _handleForegroundMessage();
+
+  //   await messaging.subscribeToTopic('all');
+  // }
+
+  static Future<void> init() async {
+  await messaging.requestPermission();
+
+  try {
     String? token = await messaging.getToken();
+
     if (token != null) {
       sendTokenToServer(token);
-      log("FCM Token: $token");
+      log("✅ FCM Token: $token");
 
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('fcm_token', token);
+    } else {
+      log("⚠️ FCM Token is null.");
     }
 
+    // Handle token refresh
     messaging.onTokenRefresh.listen((newToken) async {
       sendTokenToServer(newToken);
-      log("Refreshed FCM Token: $newToken");
+      log("🔄 Refreshed FCM Token: $newToken");
 
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('fcm_token', newToken);
     });
+  } catch (e) {
+    log("❌ Failed to get FCM token: $e");
 
-    FirebaseMessaging.onBackgroundMessage(_handleBackgroundMessage);
-    _handleForegroundMessage();
-
-    await messaging.subscribeToTopic('all');
+    if (e.toString().contains("SERVICE_NOT_AVAILABLE")) {
+      // Optional: Retry or show a message to the user
+      log("⚠️ Firebase Messaging service is not available. Try again later.");
+    }
   }
+
+  FirebaseMessaging.onBackgroundMessage(_handleBackgroundMessage);
+  _handleForegroundMessage();
+
+  await messaging.subscribeToTopic('all');
+}
+
 
   /// Handle background messages
   static Future<void> _handleBackgroundMessage(RemoteMessage message) async {

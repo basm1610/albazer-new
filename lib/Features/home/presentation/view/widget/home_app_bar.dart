@@ -57,8 +57,8 @@ class HomeAppBar extends StatelessWidget {
                       );
                     }),
                 Container(
-                  width: 32,
-                  height: 32,
+                  width: 50,
+                  height: 50,
                   decoration: const BoxDecoration(
                     image: DecorationImage(
                       image: AssetImage("assets/images/logo2.png"),

@@ -188,14 +188,17 @@ class _BuildingsAndLandsFormState extends State<BuildingsAndLandsForm> {
             },
           ),
           const SizedBox(height: 25),
-          CustomLabeledTextField(
-            key: _fieldKeys['area'],
-            controller: _areaController,
-            keyboardType: TextInputType.number,
-            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-            validator: (area) => area!.isEmpty ? 'ادخل مساحة العقار' : null,
-            label: 'المساحة (م٢)*',
-            hint: "ادخل مساحة العقار ...",
+          ChipSection(
+            key: _fieldKeys['saleOrRent'],
+            title: 'بيع/ايجار',
+            items: saleOrRentChoices,
+            selectedItems: [_selectedSaleOrRent],
+            onSelect: (choice) {
+              setState(() {
+                _selectedSaleOrRent =
+                    _selectedSaleOrRent == choice ? '' : choice;
+              });
+            },
           ),
           const SizedBox(height: 25),
           CheckBoxesSection(
@@ -210,6 +213,16 @@ class _BuildingsAndLandsFormState extends State<BuildingsAndLandsForm> {
             },
           ),
           const SizedBox(height: 25),
+          CustomLabeledTextField(
+            key: _fieldKeys['area'],
+            controller: _areaController,
+            keyboardType: TextInputType.number,
+            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+            validator: (area) => area!.isEmpty ? 'ادخل مساحة العقار' : null,
+            label: 'المساحة (م٢)*',
+            hint: "ادخل مساحة العقار ...",
+          ),
+          const SizedBox(height: 25),
           CheckBoxesSection(
             key: _fieldKeys['owner'],
             title: 'تم النشر من قبل',
@@ -218,19 +231,6 @@ class _BuildingsAndLandsFormState extends State<BuildingsAndLandsForm> {
             onChanged: (status) {
               setState(() {
                 _owner = _owner == status ? '' : status;
-              });
-            },
-          ),
-          const SizedBox(height: 25),
-          ChipSection(
-            key: _fieldKeys['saleOrRent'],
-            title: 'بيع/ايجار',
-            items: saleOrRentChoices,
-            selectedItems: [_selectedSaleOrRent],
-            onSelect: (choice) {
-              setState(() {
-                _selectedSaleOrRent =
-                    _selectedSaleOrRent == choice ? '' : choice;
               });
             },
           ),
@@ -329,20 +329,6 @@ class _BuildingsAndLandsFormState extends State<BuildingsAndLandsForm> {
             onChanged: (currency) => setState(() => _dollarOrLera = currency!),
           ),
           const SizedBox(height: 25),
-          CheckBoxesSection(
-            key: _fieldKeys['paymentMethod'],
-            title: 'طريقة الدفع',
-            items: paymentMethods,
-            selectedItems: [_selectedPaymentMethod],
-            onChanged: (paymentMethod) {
-              setState(() {
-                _selectedPaymentMethod = _selectedPaymentMethod == paymentMethod
-                    ? ''
-                    : paymentMethod;
-              });
-            },
-          ),
-          const SizedBox(height: 25),
           CustomLabeledTextField(
             key: _fieldKeys['price'],
             controller: _priceController,
@@ -359,6 +345,20 @@ class _BuildingsAndLandsFormState extends State<BuildingsAndLandsForm> {
             text: "قابل للتفاوض",
             isChecked: _negotiable,
             onChanged: (value) => setState(() => _negotiable = value!),
+          ),
+          const SizedBox(height: 25),
+          CheckBoxesSection(
+            key: _fieldKeys['paymentMethod'],
+            title: 'طريقة الدفع',
+            items: paymentMethods,
+            selectedItems: [_selectedPaymentMethod],
+            onChanged: (paymentMethod) {
+              setState(() {
+                _selectedPaymentMethod = _selectedPaymentMethod == paymentMethod
+                    ? ''
+                    : paymentMethod;
+              });
+            },
           ),
           const SizedBox(height: 25),
           Text(

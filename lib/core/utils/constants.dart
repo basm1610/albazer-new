@@ -20,6 +20,7 @@ class AppConstants {
     'دير الزور',
     'الحسكة',
   ];
+  
   static const List<String> carBrands = [
     "أوبل",
     "أودى",
